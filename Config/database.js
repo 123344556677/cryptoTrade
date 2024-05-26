@@ -3,8 +3,8 @@ const mongoose = require("mongoose");
 // const options = { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false };
 
 // Connect and handle initial connection errors
-const DB = (uri) => {
-  mongoose.connect(uri).then(
+const DB = async (uri) => {
+  await mongoose.connect(uri).then(
     () => {
       console.log("connected to mongodb");
     },
