@@ -1,74 +1,84 @@
-const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcryptjs');
-require('dotenv').config()
+const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+require("dotenv").config();
 
-const UserSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema(
+  {
     fname: {
-        required: [true, 'Please Enter Your First Name'],
-        type: String,
+      required: [true, "Please Enter Your First Name"],
+      type: String,
     },
     lname: {
-        required: [true, 'Please Enter Your Last Name'],
-        type: String,
+      required: [true, "Please Enter Your Last Name"],
+      type: String,
     },
     email: {
-        required: [true, 'Please Enter Your Email'],
-        type: String,
-        unique: true,
+      required: [true, "Please Enter Your Email"],
+      type: String,
+      unique: true,
     },
     password: {
-        required: [true, 'Please Enter Your Password'],
-        type: String,
+      required: [true, "Please Enter Your Password"],
+      type: String,
     },
-    cnic: {
-        front: {
-            type: String,
-            required: [true, 'Please upload front image of CNIC']
-        },
-        back: {
-            type: String,
-            required: [true, 'Please upload back image of CNIC']
-        }
+    frontId: {
+      type: String,
+      required: [true, "Please upload front image of CNIC"],
     },
+    backId: {
+      type: String,
+      required: [true, "Please upload back image of CNIC"],
+    },
+
     profileImage: {
-        type: String
+      type: String,
     },
-    code:{
-        type: Number    
+    code: {
+      type: Number,
     },
-    balance:{
-        type: Number
+    balance: {
+      type: Number,
     },
-    referralCode:{
-        type: String
+    referralCode: {
+      type: String,
     },
-}, {timestamps: true})
+  },
+  { timestamps: true }
+);
 
 UserSchema.methods.getFullName = function () {
-    return `${this.fname} ${this.lname}`;
+  return `${this.fname} ${this.lname}`;
 };
 
-UserSchema.pre('save', async function () {
-    if (this.isModified("password")) {
-        const salt = await bcrypt.genSalt(10)
-        this.password = await bcrypt.hash(this.password, salt)
-    }
-})
+UserSchema.pre("save", async function () {
+  if (this.isModified("password")) {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+  }
+});
 
 UserSchema.methods.createToken = function () {
-    const token = jwt.sign({ userId: this._id, name: this.getFullName() }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_LIFETIME })
-    return token
-}
+  const token = jwt.sign(
+    { userId: this._id, name: this.getFullName() },
+    process.env.JWT_SECRET,
+    { expiresIn: process.env.JWT_LIFETIME }
+  );
+  return token;
+};
 
 UserSchema.methods.createOTPToken = function () {
-    const token = jwt.sign({ userId: this._id, name: this.getFullName() }, process.env.JWT_SECRET, { expiresIn: '2m' })
-    return token
-}
+  const token = jwt.sign(
+    { userId: this._id, name: this.getFullName() },
+    process.env.JWT_SECRET,
+    { expiresIn: "2m" }
+  );
+  return token;
+};
 
 UserSchema.methods.comparePassword = async function (reqPassword) {
-    const isMatch = await bcrypt.compare(reqPassword, this.password)
-    return isMatch
-}
+  const isMatch = await bcrypt.compare(reqPassword, this.password);
+  return isMatch;
+};
 
-module.exports = mongoose.model('User', UserSchema)
+module.exports = mongoose.model("User", UserSchema);

@@ -25,7 +25,7 @@ router.post('/login',
     ], validatorMiddleware,
     login)
 
-router.post('/signup', upload.array("Cnic", 2),
+router.post('/signup', upload.any(),
     // [
     //     body('fname').not().notEmpty().isLength({ min: 3 }).withMessage('Invalid First Name'),
     //     body('lname').not().notEmpty().isLength({ min: 3 }).withMessage('Invalid Last Name'),

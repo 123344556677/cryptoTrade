@@ -15,8 +15,8 @@ const signup = async (req, res) => {
     //Multer
     const imageUrls = req.files.map(file => `${req.protocol}://${req.get('host')}/uploads/${file.filename}`);
 
-    newUser.cnic.front = imageUrls[0]
-    newUser.cnic.back = imageUrls[1]
+    newUser.frontId = imageUrls[0]
+    newUser.backId = imageUrls[1]
 
     const token = newUser.createToken()
 
