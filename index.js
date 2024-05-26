@@ -2,39 +2,41 @@ const cors = require("cors");
 const express = require("express");
 const bodyParser = require("body-parser");
 const DB = require("./Config/database");
-const dotenv=require("dotenv")
-dotenv.config()
+const path = require('path');
+require("dotenv").config()
+require('express-async-errors');
 
 // create express app
-const app = express(); 
-var router = express.Router({ strict: true });
+const app = express();
 
-//  var corsOptions = { origin: ['http://localhost:3011', 'http://localhost:3000' ] }
+app.use(cors("*"));
 
-//  var corsOptions = { origin: ['https://uhcstock.com', 'https://admin.uhcstock.com', ] }
-
-// var corsOptions = {
-//   origin: '*'
-// }
-
-app.use(cors("*")); 
-// Setup server port
-const port = process.env.PORT || 5001;
-
-// parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
-// parse requests of content-type - application/json
+
 app.use(express.json());
 
-// app.get('/test', (req, res) => {
-//   res.send('GET request to the homepage')
-// })
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// app.use("/", router);
-// require("./Routes/routes")(app); 
+//Routers
+const AuthRoutes = require('./Routes/auth')
 
-// listen for requests
-app.listen(port, () => {
+app.use('/user', AuthRoutes)
+
+
+
+// Error handler and Not Found MiddleWare
+const errorhandler = require('./middleware/error-handler')
+const notFound = require('./middleware/not-found')
+
+app.use(notFound)
+
+app.use(errorhandler)
+
+
+const port = process.env.PORT || 5001;
+
+app.listen(port, async () => {
+  await DB(process.env.MONGODB_URI);
   console.log(`Server is listening on port ${port}`);
 });
-DB(process.env.MONGODB_URI);
+
