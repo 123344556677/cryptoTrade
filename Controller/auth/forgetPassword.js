@@ -29,7 +29,7 @@ const sendOtpToEmail = async (req, res) => {
 
     const data = { ...user.toObject(), token }
 
-    res.send({ status: 'success', data })
+    res.send({ status: 'success', data, message: 'OTP is sent to your email Successfully'})
 
 }
 
@@ -57,7 +57,7 @@ const checkOTP = async (req, res) => {
 
     const data = { ...user.toObject(), token }
 
-    res.send({ status: 'success', data })
+    res.send({ status: 'success', data, message: 'Code is Correct' })
 
 }
 
@@ -81,7 +81,7 @@ const setNewPassword = async (req, res) => {
 
     const data = { ...user.toObject(), token }
 
-    res.send({ status: 'success', data })
+    res.send({ status: 'success', data, message: 'New Password updated Successfully' })
 
 }
 

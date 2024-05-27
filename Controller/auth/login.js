@@ -19,7 +19,7 @@ const login = async (req, res) => {
 
     const data = { ...user.toObject(), token }
 
-    res.status(200).json({ status: 'success', data })
+    res.status(200).json({ status: 'success', data, message: 'Logged in Successfully' })
 }
 
 module.exports = { login }
