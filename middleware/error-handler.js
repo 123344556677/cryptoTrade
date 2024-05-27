@@ -11,7 +11,7 @@ const errorHandlerMiddleware = (err, req, res, next) => {
   }
   if (err.code && err.code === 11000) {
     customError.status = 400;
-    customError.err = `Duplicate Value entered for ${Object.keys(err.keyValue)} field`
+    customError.err = `This ${Object.keys(err.keyValue)} already Exists`
   }
   if (err.name === 'CastError') {
     customError.status = 404;
