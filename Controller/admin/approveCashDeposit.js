@@ -1,7 +1,7 @@
 const CashDeposit = require('../../models/CashDeposit')
 const User = require('../../models/User')
 
-const approvedPendingCashDeposit = async (req, res) => {
+const approveCashDeposit = async (req, res) => {
 
     const id = req.params.id
 
@@ -26,4 +26,4 @@ const approvedPendingCashDeposit = async (req, res) => {
 
 };
 
-module.exports = { approvedPendingCashDeposit }
+module.exports = { approveCashDeposit }
