@@ -30,7 +30,6 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please upload back image of CNIC"],
     },
-
     profileImage: {
       type: String,
     },
@@ -43,6 +42,20 @@ const UserSchema = new mongoose.Schema(
     },
     referralCode: {
       type: String,
+    },
+    role:{
+        type: String,
+        enum: ['user', 'admin'],
+        default: 'user'
+    },
+    fundPassword: {
+        type: Number,
+        validate: {
+            validator: function(value) {
+              return value.toString().length === 6;
+            },
+            message: 'Fund Password must be 6 digits'
+        }
     },
   },
   { timestamps: true }

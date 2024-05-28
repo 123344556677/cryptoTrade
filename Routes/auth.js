@@ -17,6 +17,7 @@ const { changePassword } = require('../Controller/auth/changePassword')
 const { sendOtpToEmail, checkOTP, setNewPassword } = require('../Controller/auth/forgetPassword')
 const { getUser } = require('../Controller/auth/getUser')
 const { setProfileImage } = require('../Controller/auth/setProfileImage')
+const { updateInformation } = require('../Controller/auth/updateInformation')
 
 router.post('/login',
     [
@@ -37,15 +38,13 @@ router.post('/signup', upload.any(),
 
 //router.post('/updateCnic',Authentication, upload.single("cnic"), updateCnic)
 
-//router.patch('/updateInformation',Authentication,
-// [
-//    //  body('fname').optional().isLength({ min: 3 }).withMessage('Invalid First Name'),
-//    //  body('lname').optional().isLength({ min: 3 }).withMessage('Invalid Last Name'),
-//    //  body('email').optional().isEmail().withMessage('Invalid email address'),
-//    //  body('phoneNumber').optional().isNumeric().withMessage('Invalid phone number'),
-//    //  body('address').optional().isString().withMessage('Invalid address'),
-//  ],validatorMiddleware, 
-//updateInformation)
+router.patch('/updateInformation',Authentication,
+[
+    body('fname').optional().isLength({ min: 3 }).withMessage('Invalid First Name'),
+    body('lname').optional().isLength({ min: 3 }).withMessage('Invalid Last Name'),
+    body('email').optional().isEmail().withMessage('Invalid email address'),
+    body('fundPassword').optional().isNumeric().withMessage('Invalid Fund Password'),
+ ],validatorMiddleware, updateInformation)
 
 router.patch('/changePassword', Authentication,
     [

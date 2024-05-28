@@ -22,7 +22,7 @@ const approvedPendingCashDeposit = async (req, res) => {
     await user.save()
     
 
-    res.status(200).json({ status: 'true', cashDeposit , message: 'Balance is successfully updated'});
+    res.status(200).json({ status: 'success', cashDeposit , message: 'Balance is successfully updated'});
 
 };
 
