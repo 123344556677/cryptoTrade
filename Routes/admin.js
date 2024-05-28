@@ -3,7 +3,7 @@ const express = require('express');
 //Middlewares
 
 const Authentication = require('../middleware/authentication')
-const upload = require('../middleware/multer');
+const isAdmin = require('../middleware/isAdmin');
 
 //Router
 const router = express.Router()
@@ -12,10 +12,12 @@ const router = express.Router()
 const { getApprovedCashDeposited } = require('../Controller/admin/getApprovedCashDeposited')
 const { getPendingCashDeposited } = require('../Controller/admin/getPendingCashDeposited')
 const { approvedPendingCashDeposit } = require('../Controller/admin/approvedPendingCashDeposit')
+const { getInformation } = require('../Controller/admin/getInformation')
 
 
-router.get('/getApprovedCashDeposited', Authentication, getApprovedCashDeposited)
-router.get('/getPendingCashDeposited', Authentication, getPendingCashDeposited)
-router.patch('/getPendingCashDeposited/:id', Authentication, approvedPendingCashDeposit)
+router.get('/getInformation', Authentication, isAdmin ,getInformation)
+router.get('/getApprovedCashDeposited', Authentication, isAdmin ,getApprovedCashDeposited)
+router.get('/getPendingCashDeposited', Authentication, isAdmin ,getPendingCashDeposited)
+router.patch('/getPendingCashDeposited/:id', Authentication, isAdmin , approvedPendingCashDeposit)
 
 module.exports = router

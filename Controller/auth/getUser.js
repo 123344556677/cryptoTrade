@@ -6,7 +6,7 @@ const getUser = async (req, res) => {
 
     const user = await User.findById(id);
 
-    res.status(200).json({ status: 'true', user });
+    res.status(200).json({ status: 'success', user });
 
 };
 
