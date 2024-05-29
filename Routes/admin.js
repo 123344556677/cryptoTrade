@@ -28,7 +28,8 @@ router.get('/getApprovedCashDeposited', Authentication, isAdmin ,getApprovedCash
 router.get('/getPendingCashDeposited', Authentication, isAdmin ,getPendingCashDeposited)
 router.patch('/approveCashDeposit/:id', Authentication,
 [
-    param('id').not().notEmpty().isMongoId().withMessage('Invalid CashDeposit Id')
+    param('id').not().notEmpty().isMongoId().withMessage('Invalid CashDeposit Id'),
+    body('additionalAmount').not().notEmpty().not().isString().withMessage('additionalAmount should not be String').isNumeric().withMessage('Invalid additionalAmount')
 ], validatorMiddleware,
 isAdmin , approveCashDeposit)
 
