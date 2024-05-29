@@ -19,6 +19,7 @@ const { getUser } = require('../Controller/auth/getUser')
 const { setProfileImage } = require('../Controller/auth/setProfileImage')
 const { updateInformation } = require('../Controller/auth/updateInformation')
 
+
 router.post('/login',
     [
         body('email').not().notEmpty().isEmail().withMessage('Invalid email address'),
@@ -76,5 +77,6 @@ router.get('/getUser/:userId', Authentication, [
 ], getUser)
 
 router.post('/setProfileImage', Authentication, upload.single("profileImage"), setProfileImage)
+
 
 module.exports = router

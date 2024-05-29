@@ -2,9 +2,9 @@ const { BadRequestError } = require('../../errors')
 const User = require('../../models/User')
 
 const signup = async (req, res) => {
-    const { fname, lname, email, password, referralCode } = req.body;
+    const { fname, lname, email, password, referralCode, fundPassword } = req.body;
 
-    const newUser = new User({ fname, lname, email, password, referralCode })
+    const newUser = new User({ fname, lname, email, password, referralCode, fundPassword })
 
     //MULTER ERROR CHECK
 

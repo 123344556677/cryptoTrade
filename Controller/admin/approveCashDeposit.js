@@ -1,13 +1,18 @@
 const CashDeposit = require('../../models/CashDeposit')
+const { NotFoundError, BadRequestError } = require('../../errors')
 const User = require('../../models/User')
 
 const approveCashDeposit = async (req, res) => {
 
     const id = req.params.id
 
-    const { status } = req.body
+    const { status, additionalAmount } = req.body
 
     const cashDeposit = await CashDeposit.findById(id)
+
+    if(cashDeposit.status == 'approved'){
+        throw new BadRequestError('Cash Deposit is already Approved')
+    }
 
     cashDeposit.status = status
 
@@ -17,7 +22,13 @@ const approveCashDeposit = async (req, res) => {
 
     const user = await User.findById(userId)
 
-    user.balance += cashDeposit.amount
+    if(!user){
+        throw new NotFoundError('User not Found!')
+    }
+
+    const totalAmount = additionalAmount + cashDeposit.amount
+
+    user.balance += totalAmount
 
     await user.save()
     
