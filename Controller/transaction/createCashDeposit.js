@@ -2,7 +2,7 @@ const { BadRequestError, NotFoundError } = require('../../errors')
 const CashDeposit = require('../../models/CashDeposit')
 const User = require('../../models/User')
 
-const CashDeposited = async (req, res) => {
+const createCashDeposit = async (req, res) => {
     const { transactionNumber, amount } = req.body;
 
     const userId = req.user.userId
@@ -27,5 +27,5 @@ const CashDeposited = async (req, res) => {
 }
 
 
-module.exports = { CashDeposited }
+module.exports = { createCashDeposit }
 

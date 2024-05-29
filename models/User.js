@@ -49,13 +49,8 @@ const UserSchema = new mongoose.Schema(
         default: 'user'
     },
     fundPassword: {
-        type: Number,
-        validate: {
-            validator: function(value) {
-              return value.toString().length === 6;
-            },
-            message: 'Fund Password must be 6 digits'
-        }
+        type: String,
+        required: [true, 'Please Enter fund Password']
     },
   },
   { timestamps: true }
@@ -69,6 +64,13 @@ UserSchema.pre("save", async function () {
   if (this.isModified("password")) {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
+  }
+});
+
+UserSchema.pre("save", async function () {
+  if (this.isModified("fundPassword")) {
+    const salt = await bcrypt.genSalt(10);
+    this.fundPassword = await bcrypt.hash(this.fundPassword, salt);
   }
 });
 
@@ -92,6 +94,11 @@ UserSchema.methods.createOTPToken = function () {
 
 UserSchema.methods.comparePassword = async function (reqPassword) {
   const isMatch = await bcrypt.compare(reqPassword, this.password);
+  return isMatch;
+};
+
+UserSchema.methods.compareFundPassword = async function (reqPassword) {
+  const isMatch = await bcrypt.compare(reqPassword, this.fundPassword);
   return isMatch;
 };
 
