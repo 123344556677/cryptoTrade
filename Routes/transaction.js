@@ -19,15 +19,15 @@ router.post('/createCashDeposit', Authentication, upload.single("TransactionImag
 
 router.post('/checkWalletAddress', Authentication, [
     body('walletAddress').not().notEmpty().isString().withMessage('Invalid Wallet Address'),
-    body('fundPassword').not().notEmpty().isNumeric().withMessage('Invalid Wallet Address')
+    body('fundPassword').not().notEmpty().isString().withMessage('Invalid Fund Password')
  ],
  validatorMiddleware, checkWalletAddress)
 
 router.post('/createCashWithDrawal', Authentication,[
-    body('walletAddress').not().notEmpty().isString().withMessage('Invalid First Name'),
-    body('amount').not().notEmpty().isNumeric().withMessage('Invalid First Name'),
-    body('type').not().notEmpty().isString().withMessage('Invalid First Name'),
-    body('fundPassword').not().notEmpty().isNumeric().withMessage('Invalid Wallet Address')
+    body('walletAddress').not().notEmpty().isString().withMessage('Invalid Wallet Adress'),
+    body('amount').not().notEmpty().isNumeric().withMessage('Invalid amount'),
+    body('type').not().notEmpty().isString().withMessage('Invalid type'),
+    body('fundPassword').not().notEmpty().isString().withMessage('Invalid Fund Password')
  ],
  validatorMiddleware, createCashWithDrawal)
 

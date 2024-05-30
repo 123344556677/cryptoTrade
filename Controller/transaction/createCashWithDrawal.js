@@ -28,7 +28,7 @@ const createCashWithDrawal = async (req, res) => {
 
     await cashWithDrawal.save()
 
-    res.status(200).json({ status: 'success', cashWithDrawal ,message: 'Created a Deposit Request Sucessfully. Sooner it will be in your wallet' })
+    res.status(200).json({ status: 'success', cashWithDrawal ,message: 'Created a Withdrawal Request Sucessfully. Sooner it will be in your wallet' })
 }
 
 
