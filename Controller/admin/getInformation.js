@@ -1,4 +1,5 @@
 const CashDeposit = require('../../models/CashDeposit')
+const CashWithDrawal = require('../../models/CashWithDrawal')
 const User = require('../../models/User')
 
 const getInformation = async (req, res) => {
@@ -7,7 +8,9 @@ const getInformation = async (req, res) => {
 
     const getCashDeposited = await CashDeposit.countDocuments()
 
-    res.status(200).json({ status: 'success', getCashDeposited, TotalUsers });
+    const getCashWithDrawal = await CashWithDrawal.countDocuments()
+
+    res.status(200).json({ status: 'success', getCashDeposited, getCashWithDrawal ,TotalUsers });
 
 };
 
