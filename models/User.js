@@ -52,6 +52,9 @@ const UserSchema = new mongoose.Schema(
         type: String,
         required: [true, 'Please Enter fund Password']
     },
+    walletAddress: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

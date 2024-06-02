@@ -22,6 +22,7 @@ const { getAllUsers } = require('../Controller/admin/getAllUsers')
 const { deleteUser } = require('../Controller/admin/deleteUser')
 const { deleteCashDeposit } = require('../Controller/admin/deleteCashDeposit')
 const { deleteCashWithDrawal } = require('../Controller/admin/deleteCashWithDrawal')
+const { updateWalletAddress } = require('../Controller/admin/updateWalletAddress')
 
 router.get('/getInformation', Authentication, isAdmin ,getInformation)
 router.get('/getApprovedCashDeposited', Authentication, isAdmin ,getApprovedCashDeposited)
@@ -58,6 +59,14 @@ isAdmin , approveCashWithDrawal)
 router.delete('/deleteCashWithDrawal/:CashWithDrawalId', Authentication, [
     param('CashWithDrawalId').not().notEmpty().isMongoId().withMessage('Invalid Cash WithDrawal Id')
 ], validatorMiddleware, isAdmin ,deleteCashWithDrawal)
+
+//UPDATE WALLET ADDRESS
+
+router.patch('/updateWalletAddress/:userId', Authentication, [
+    param('userId').not().notEmpty().isMongoId().withMessage('Invalid User ID'),
+    body('walletAddress').not().notEmpty().isString().withMessage('Invalid Wallet Address')
+]
+, validatorMiddleware, isAdmin ,updateWalletAddress)
 
 
 module.exports = router

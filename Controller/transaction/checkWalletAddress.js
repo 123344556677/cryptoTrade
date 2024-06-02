@@ -22,6 +22,10 @@ const checkWalletAddress = async (req, res) => {
         throw new UnauthorizedError('Fund Password is incorrect!')
     }
 
+    checkUser.walletAddress = walletAddress;
+
+    await checkUser.save()
+
     res.status(200).json({ status: 'success', message: 'Correct Wallet Address' })
 }
 
