@@ -2,19 +2,27 @@
 
 const { NotFoundError } = require("../../errors")
 const User = require("../../models/User")
+const validateWalletAddress = require('../../HelpingFunctions/validateWalletAddress')
 
-
-const updateInformation = async(req,res)=>{
+const updateInformation = async (req, res) => {
 
     const id = req.user.userId;
 
     const user = await User.findById(id)
 
-    if (!user){
+    if (!user) {
         throw new NotFoundError('User not Found!')
     }
 
-    const fieldsToUpdate = ['fname', 'lname', 'email', 'fundPassword'];
+    //Checking walletAddress if available
+    const { walletAddress } = req.body
+
+    if (walletAddress) {
+        await validateWalletAddress(walletAddress);
+    }
+
+    const fieldsToUpdate = ['fname', 'lname', 'email', 'fundPassword', 'walletAddress'];
+
     fieldsToUpdate.forEach(field => {
         if (req.body[field]) {
             user[field] = req.body[field];
@@ -23,8 +31,8 @@ const updateInformation = async(req,res)=>{
 
     await user.save()
 
-    res.send({status:'success', user})
+    res.send({ status: 'success', user })
 }
 
 
-module.exports = {updateInformation}
+module.exports = { updateInformation }

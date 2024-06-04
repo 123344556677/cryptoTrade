@@ -14,6 +14,7 @@ const router = express.Router()
 const { createCashDeposit } = require('../Controller/transaction/createCashDeposit')
 const { checkWalletAddress } = require('../Controller/transaction/checkWalletAddress')
 const { createCashWithDrawal } = require('../Controller/transaction/createCashWithDrawal')
+const { getAdminWalletAddress } = require('../Controller/transaction/getAdminWalletAddress')
 
 router.post('/createCashDeposit', Authentication, upload.single("TransactionImage"), createCashDeposit)
 
@@ -30,5 +31,7 @@ router.post('/createCashWithDrawal', Authentication,[
     body('fundPassword').not().notEmpty().isString().withMessage('Invalid Fund Password')
  ],
  validatorMiddleware, createCashWithDrawal)
+
+ router.get('/getAdminWalletAddress', Authentication, getAdminWalletAddress)
 
 module.exports = router

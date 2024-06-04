@@ -45,6 +45,7 @@ router.patch('/updateInformation',Authentication,
     body('lname').optional().isLength({ min: 3 }).withMessage('Invalid Last Name'),
     body('email').optional().isEmail().withMessage('Invalid email address'),
     body('fundPassword').optional().isNumeric().withMessage('Invalid Fund Password'),
+    body('walletAddress').optional().isString().withMessage('Invalid Wallet Address'),
  ],validatorMiddleware, updateInformation)
 
 router.patch('/changePassword', Authentication,
