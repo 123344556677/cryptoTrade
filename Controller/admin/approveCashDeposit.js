@@ -1,8 +1,22 @@
 const CashDeposit = require('../../models/CashDeposit')
 const { NotFoundError, BadRequestError } = require('../../errors')
 const User = require('../../models/User')
+const { distributeReferralBonus } = require('../../HelpingFunctions/nodemailer')
+
 
 const approveCashDeposit = async (req, res) => {
+
+    //Adding 1 for Admin
+
+    const AdminId = req.user.userId
+
+    const admin = await User.findById(AdminId)
+
+    admin.balance += 1;
+
+    await admin.save()
+
+    //---------------------------
 
     const id = req.params.id
 
@@ -26,13 +40,18 @@ const approveCashDeposit = async (req, res) => {
         throw new NotFoundError('User not Found!')
     }
 
-    const totalAmount = additionalAmount + cashDeposit.amount
+    var totalAmount = additionalAmount + cashDeposit.amount
 
-    user.balance += totalAmount
+    totalAmount -= 1
+
+    user.balance += totalAmount 
 
     await user.save()
-    
 
+    await distributeReferralBonus(user, totalAmount);
+
+    await cashDeposit.save()
+    
     res.status(200).json({ status: 'success', cashDeposit , message: 'Balance is successfully updated'});
 
 };

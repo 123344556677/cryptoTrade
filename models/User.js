@@ -40,8 +40,11 @@ const UserSchema = new mongoose.Schema(
       type: Number,
       default: 0
     },
-    referralCode: {
+    referralCode: { // The code of Person , who's code I've added during signUp as Referral
       type: String,
+    },
+    myReferral:{ //To invite people
+      type: String
     },
     role:{
         type: String,
@@ -55,6 +58,18 @@ const UserSchema = new mongoose.Schema(
     walletAddress: {
       type: String,
     },
+    directReferrals: [{ //type A
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }],
+    indirectReferrals: [{ //type B
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }],
+    referrer: { //The person who's referral code I've used
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }
   },
   { timestamps: true }
 );
