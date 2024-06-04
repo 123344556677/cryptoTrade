@@ -4,6 +4,18 @@ const User = require('../../models/User')
 
 const approveCashWithDrawal = async (req, res) => {
 
+        //Adding 1 for Admin
+
+        const AdminId = req.user.userId
+
+        const admin = await User.findById(AdminId)
+    
+        admin.balance += 1;
+    
+        await admin.save()
+    
+        //---------------------------
+
     const id = req.params.id
 
     const { status } = req.body
