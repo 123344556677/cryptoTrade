@@ -1,4 +1,6 @@
 const User = require('../models/User');
+const TeamCommunity = require('../models/TeamCommunity');
+const EarningsHistory = require('../models/EarningsHistory');
 
 const generateRandomCode = () => {
     return Math.floor(100000 + Math.random() * 900000);
@@ -33,8 +35,38 @@ const generateUniqueReferralCode = async () => {
     return referralCode;
 };
 
- // Distribute referral bonuses
- const distributeReferralBonus = async (user, amount) => {
+//  // Distribute referral bonuses
+//  const distributeReferralBonus = async (user, amount) => {
+//     let referrer = await User.findById(user.referrer);
+//     if (referrer) {
+//         const referrerBonus = amount * 0.05; // 5%
+//         referrer.balance += referrerBonus;
+//         await referrer.save();
+//         console.log('Updated for 5');
+
+//         let referrer2 = await User.findById(referrer.referrer);
+//         if (referrer2) {
+//             const referrer2Bonus = amount * 0.03; // 3%
+//             referrer2.balance += referrer2Bonus;
+//             await referrer2.save();
+
+//             console.log('Updated for 3');
+
+//             let referrer3 = await User.findById(referrer2.referrer);
+//             if (referrer3) {
+//                 const referrer3Bonus = amount * 0.01; // 1%
+//                 referrer3.balance += referrer3Bonus;
+//                 await referrer3.save();
+
+//                 console.log('Updated for 1');
+//             }
+//         }
+//     }
+// };
+
+//SECOND ONe
+
+const distributeReferralBonus = async (user, amount) => {
     let referrer = await User.findById(user.referrer);
     if (referrer) {
         const referrerBonus = amount * 0.05; // 5%
@@ -42,21 +74,73 @@ const generateUniqueReferralCode = async () => {
         await referrer.save();
         console.log('Updated for 5');
 
+        // Update TeamCommunity metrics for referrer
+        let referrerMetrics = await TeamCommunity.findOne({ userId: referrer._id });
+        if (!referrerMetrics) {
+            referrerMetrics = new TeamCommunity({ userId: referrer._id });
+        }
+        referrerMetrics.totalRevenue += referrerBonus;
+        referrerMetrics.addedRecharge += amount;
+        referrerMetrics.newRegistration -= 1
+        await referrerMetrics.save();
+
+        // Create EarningsHistory record for referrer
+        const earningsHistory = new EarningsHistory({
+            senderUserId: user._id,
+            receiverUserId: referrer._id,
+            amount: referrerBonus
+        });
+        await earningsHistory.save();
+
         let referrer2 = await User.findById(referrer.referrer);
         if (referrer2) {
             const referrer2Bonus = amount * 0.03; // 3%
             referrer2.balance += referrer2Bonus;
             await referrer2.save();
-
             console.log('Updated for 3');
+
+            // Update TeamCommunity metrics for referrer2
+            let referrer2Metrics = await TeamCommunity.findOne({ userId: referrer2._id });
+            if (!referrer2Metrics) {
+                referrer2Metrics = new TeamCommunity({ userId: referrer2._id });
+            }
+            referrer2Metrics.totalRevenue += referrer2Bonus;
+            referrer2Metrics.addedRecharge += amount;
+            referrer2Metrics.newRegistration -= 1
+            await referrer2Metrics.save();
+
+            // Create EarningsHistory record for referrer2
+            const earningsHistory2 = new EarningsHistory({
+                senderUserId: user._id,
+                receiverUserId: referrer2._id,
+                amount: referrer2Bonus
+            });
+            await earningsHistory2.save();
 
             let referrer3 = await User.findById(referrer2.referrer);
             if (referrer3) {
                 const referrer3Bonus = amount * 0.01; // 1%
                 referrer3.balance += referrer3Bonus;
                 await referrer3.save();
-
                 console.log('Updated for 1');
+
+                // Update TeamCommunity metrics for referrer3
+                let referrer3Metrics = await TeamCommunity.findOne({ userId: referrer3._id });
+                if (!referrer3Metrics) {
+                    referrer3Metrics = new TeamCommunity({ userId: referrer3._id });
+                }
+                referrer3Metrics.totalRevenue += referrer3Bonus;
+                referrer3Metrics.addedRecharge += amount;
+                referrer3Metrics.newRegistration -= 1;
+                await referrer3Metrics.save();
+
+                // Create EarningsHistory record for referrer3
+                const earningsHistory3 = new EarningsHistory({
+                    senderUserId: user._id,
+                    receiverUserId: referrer3._id,
+                    amount: referrer3Bonus
+                });
+                await earningsHistory3.save();
             }
         }
     }
