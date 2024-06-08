@@ -21,11 +21,13 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 const AuthRoutes = require('./Routes/auth')
 const TransactionRoutes = require('./Routes/transaction')
 const AdminRoutes = require('./Routes/admin')
+const TeamRoutes = require('./Routes/teams')
 
 
 app.use('/user', AuthRoutes)
 app.use('/transaction', TransactionRoutes)
 app.use('/admin', AdminRoutes)
+app.use('/team', TeamRoutes)
 
 
 // Error handler and Not Found MiddleWare

@@ -1,5 +1,6 @@
 const { BadRequestError } = require('../../errors')
 const User = require('../../models/User')
+const TeamCommunity = require('../../models/TeamCommunity')
 const { generateUniqueReferralCode } = require('../../HelpingFunctions/nodemailer')
 
 const signup = async (req, res) => {
@@ -26,40 +27,72 @@ const signup = async (req, res) => {
     //JWT
     const token = newUser.createToken()
 
-    await newUser.save() // Will check email exist and other multiple error then we use referral code
+    //await newUser.save() // Will check email exist and other multiple error then we use referral code
 
+    const newMetrics = new TeamCommunity({ userId: newUser._id });
+    await newMetrics.save();
 
-    // Referral logic
     if (referralCode) {
+            const referrer = await User.findOne({ myReferral: referralCode });
+            if (referrer) {
+                newUser.referrer = referrer._id; // Set the referrer
+                await newUser.save(); // Save the new user
 
-        const referrer = await User.findOne({ myReferral: referralCode });
-        if (referrer) {
-            newUser.referrer = referrer._id; // Set the referrer
-            referrer.directReferrals.push(newUser._id); // Add to direct referrals (A)
+                // Update referrer's directReferrals
+                referrer.directReferrals.push(newUser._id);
+                await referrer.save();
 
-            await referrer.save();
+                // Update referrer's TeamCommunity
+                let referrerMetrics = await TeamCommunity.findOne({ userId: referrer._id });
+                if (!referrerMetrics) {
+                    referrerMetrics = new TeamCommunity({ userId: referrer._id });
+                }
+                referrerMetrics.totalPeople += 1;
+                referrerMetrics.newRegistration += 1;
+                await referrerMetrics.save();
 
-            // Update the original referrer's indirectReferrals if the new user's referrer has one
-            if (referrer.referrer) {
-                const originalReferrer = await User.findById(referrer.referrer);
-                if (originalReferrer) {
-                    originalReferrer.indirectReferrals.push(newUser._id); // Add to indirect referrals (B)
-                    await originalReferrer.save();
+                // Update original referrer's indirectReferrals if exists
+                if (referrer.referrer) {
+                    const originalReferrer = await User.findById(referrer.referrer);
+                    if (originalReferrer) {
+                        originalReferrer.indirectReferrals.push(newUser._id);
+                        await originalReferrer.save();
 
-                    if (originalReferrer.referrer) {
-                        const secondLevelReferrer = await User.findById(originalReferrer.referrer);
-                        if (secondLevelReferrer) {
-                            secondLevelReferrer.indirectReferrals.push(newUser._id); // Add to indirect referrals
-                            await secondLevelReferrer.save();
+                        // Update original referrer's TeamCommunity
+                        let referrerMetrics2 = await TeamCommunity.findOne({ userId: originalReferrer._id });
+                        if (!referrerMetrics2) {
+                            referrerMetrics2 = new TeamCommunity({ userId: originalReferrer._id });
+                        }
+                        referrerMetrics2.totalPeople += 1;
+                        referrerMetrics2.newRegistration += 1;
+                        await referrerMetrics2.save();
+
+                        // Update second-level referrer's indirectReferrals if exists
+                        if (originalReferrer.referrer) {
+                            const secondLevelReferrer = await User.findById(originalReferrer.referrer);
+                            if (secondLevelReferrer) {
+                                secondLevelReferrer.indirectReferrals.push(newUser._id);
+                                await secondLevelReferrer.save();
+
+                                // Update second-level referrer's TeamCommunity
+                                let referrerMetrics3 = await TeamCommunity.findOne({ userId: secondLevelReferrer._id });
+                                if (!referrerMetrics3) {
+                                    referrerMetrics3 = new TeamCommunity({ userId: secondLevelReferrer._id });
+                                }
+                                referrerMetrics3.totalPeople += 1;
+                                referrerMetrics3.newRegistration += 1;
+                                await referrerMetrics3.save();
+                            }
                         }
                     }
-
                 }
+            } else {
+                throw new BadRequestError('Invalid referral code');
             }
-        } else {
-            throw new BadRequestError('Invalid referral code');
-        }
+    } else {
+        await newUser.save(); // Save the new user if no referral code is provided
     }
+
 
     const data = { ...newUser.toObject(), token }
 
