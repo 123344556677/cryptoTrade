@@ -1,5 +1,6 @@
 const User = require('../../models/User')
 const { NotFoundError } = require('../../errors');
+const { distributeReferralBonus } = require('../../HelpingFunctions/nodemailer')
 
 const updateUserBalance = async (req, res) => {
     const { amount } = req.body;
@@ -13,6 +14,8 @@ const updateUserBalance = async (req, res) => {
     }
 
     user.balance += amount;
+
+    await distributeReferralBonus(user, amount);
 
     await user.save()
 

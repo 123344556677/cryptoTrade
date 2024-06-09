@@ -1,7 +1,6 @@
 const CashDeposit = require('../../models/CashDeposit')
 const { NotFoundError, BadRequestError } = require('../../errors')
 const User = require('../../models/User')
-const { distributeReferralBonus } = require('../../HelpingFunctions/nodemailer')
 
 
 const approveCashDeposit = async (req, res) => {
@@ -47,10 +46,6 @@ const approveCashDeposit = async (req, res) => {
     user.balance += totalAmount 
 
     await user.save()
-
-    await distributeReferralBonus(user, totalAmount);
-
-    await cashDeposit.save()
     
     res.status(200).json({ status: 'success', cashDeposit , message: 'Balance is successfully updated'});
 

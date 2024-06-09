@@ -10,6 +10,7 @@ const upload = require('../middleware/multer');
 //Router
 const router = express.Router()
 
+
 //Controllers
 const { login } = require('../Controller/auth/login')
 const { signup } = require('../Controller/auth/signup')
@@ -39,14 +40,14 @@ router.post('/signup', upload.any(),
 
 //router.post('/updateCnic',Authentication, upload.single("cnic"), updateCnic)
 
-router.patch('/updateInformation',Authentication,
-[
-    body('fname').optional().isLength({ min: 3 }).withMessage('Invalid First Name'),
-    body('lname').optional().isLength({ min: 3 }).withMessage('Invalid Last Name'),
-    body('email').optional().isEmail().withMessage('Invalid email address'),
-    body('fundPassword').optional().isNumeric().withMessage('Invalid Fund Password'),
-    body('walletAddress').optional().isString().withMessage('Invalid Wallet Address'),
- ],validatorMiddleware, updateInformation)
+router.patch('/updateInformation', Authentication,
+    [
+        body('fname').optional().isLength({ min: 3 }).withMessage('Invalid First Name'),
+        body('lname').optional().isLength({ min: 3 }).withMessage('Invalid Last Name'),
+        body('email').optional().isEmail().withMessage('Invalid email address'),
+        body('fundPassword').optional().isNumeric().withMessage('Invalid Fund Password'),
+        body('walletAddress').optional().isString().withMessage('Invalid Wallet Address'),
+    ], validatorMiddleware, updateInformation)
 
 router.patch('/changePassword', Authentication,
     [
