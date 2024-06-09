@@ -9,7 +9,18 @@ require('express-async-errors');
 // create express app
 const app = express();
 
-app.use(cors("*"));
+const corsOptions = {
+  origin: ["https://uhcstock.com", "http://192.168.100.5:3000", "https://admin.uhcstock.com"],
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
+
+app.options('*', cors(corsOptions));
+
+// Increase request size limit to 5MB
+app.use(bodyParser.json({ limit: '10mb' }));
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
