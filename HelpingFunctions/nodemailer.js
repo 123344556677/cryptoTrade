@@ -67,6 +67,11 @@ const generateUniqueReferralCode = async () => {
 //SECOND ONe
 
 const distributeReferralBonus = async (user, amount) => {
+    const uid = user._id
+
+    // Check if the user has any SenderId in EarningsHistory
+    const hasEarnings = await EarningsHistory.exists({ SenderUserId: uid });
+
     let referrer = await User.findById(user.referrer);
     if (referrer) {
         const referrerBonus = amount * 0.05; // 5%
@@ -81,7 +86,9 @@ const distributeReferralBonus = async (user, amount) => {
         }
         referrerMetrics.totalRevenue += referrerBonus;
         referrerMetrics.addedRecharge += amount;
-        referrerMetrics.newRegistration -= 1
+        if (!hasEarnings) {
+            referrerMetrics.newRegistration -= 1
+        }
         await referrerMetrics.save();
 
         // Create EarningsHistory record for referrer
@@ -106,7 +113,9 @@ const distributeReferralBonus = async (user, amount) => {
             }
             referrer2Metrics.totalRevenue += referrer2Bonus;
             referrer2Metrics.addedRecharge += amount;
-            referrer2Metrics.newRegistration -= 1
+            if (!hasEarnings) {
+                referrer2Metrics.newRegistration -= 1
+            }
             await referrer2Metrics.save();
 
             // Create EarningsHistory record for referrer2
@@ -131,7 +140,9 @@ const distributeReferralBonus = async (user, amount) => {
                 }
                 referrer3Metrics.totalRevenue += referrer3Bonus;
                 referrer3Metrics.addedRecharge += amount;
-                referrer3Metrics.newRegistration -= 1;
+                if (!hasEarnings) {
+                    referrer3Metrics.newRegistration -= 1;
+                }
                 await referrer3Metrics.save();
 
                 // Create EarningsHistory record for referrer3
