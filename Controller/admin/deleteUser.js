@@ -21,7 +21,7 @@ const deleteUser = async (req, res) => {
     }
 
     // Check if the user has any SenderId in EarningsHistory
-    const hasEarnings = await EarningsHistory.exists({ SenderUserId: id });
+    const hasEarnings = await EarningsHistory.exists({ senderUserId: id });
 
     const updateTeamCommunityAndReferrals = async (referrerId, userId) => {
         const referrer = await User.findById(referrerId);
