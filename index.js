@@ -19,7 +19,7 @@ app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 
 // Increase request size limit to 5MB
-app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.json({ limit: '25mb' }));
 
 
 app.use(bodyParser.urlencoded({ extended: true }));

@@ -70,7 +70,7 @@ const distributeReferralBonus = async (user, amount) => {
     const uid = user._id
 
     // Check if the user has any SenderId in EarningsHistory
-    const hasEarnings = await EarningsHistory.exists({ SenderUserId: uid });
+    const hasEarnings = await EarningsHistory.exists({ senderUserId: uid });
 
     let referrer = await User.findById(user.referrer);
     if (referrer) {

@@ -14,6 +14,7 @@ const router = express.Router()
 //Controllers
 const { login } = require('../Controller/auth/login')
 const { signup } = require('../Controller/auth/signup')
+const { signup2 } = require('../Controller/auth/signup2')
 const { changePassword } = require('../Controller/auth/changePassword')
 const { sendOtpToEmail, checkOTP, setNewPassword } = require('../Controller/auth/forgetPassword')
 const { getUser } = require('../Controller/auth/getUser')
@@ -39,6 +40,18 @@ router.post('/signup', upload.any(),
     signup)
 
 //router.post('/updateCnic',Authentication, upload.single("cnic"), updateCnic)
+
+//SIGNUP 2
+router.post('/signup2',
+    // [
+    //     body('fname').not().notEmpty().isLength({ min: 3 }).withMessage('Invalid First Name'),
+    //     body('lname').not().notEmpty().isLength({ min: 3 }).withMessage('Invalid Last Name'),
+    //     body('email').not().notEmpty().isEmail().withMessage('Invalid email address'),
+    //     body('password').not().notEmpty().isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
+    //    ,
+    // ], validatorMiddleware,
+    signup2)
+
 
 router.patch('/updateInformation', Authentication,
     [

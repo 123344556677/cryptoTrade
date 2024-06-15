@@ -5,7 +5,6 @@ const { body } = require('express-validator');
 
 const Authentication = require('../middleware/authentication')
 const validatorMiddleware = require('../middleware/Validator-MiddleWare');
-const upload = require('../middleware/multer');
 
 //Router
 const router = express.Router()
@@ -17,7 +16,12 @@ const { checkWalletAddress } = require('../Controller/transaction/checkWalletAdd
 const { createCashWithDrawal } = require('../Controller/transaction/createCashWithDrawal')
 const { getAdminWalletAddress } = require('../Controller/transaction/getAdminWalletAddress')
 
-router.post('/createCashDeposit', Authentication, upload.single("TransactionImage"), createCashDeposit)
+router.post('/createCashDeposit', Authentication,[
+    body('transactionNumber').not().notEmpty().isString().withMessage('Invalid Transaction Number'),
+    body('amount').not().notEmpty().not().isString().withMessage('Amount should not be String').isNumeric().withMessage('Invalid Amount'),
+    body('image').not().notEmpty().isString().withMessage('Invalid Image')
+ ],
+ validatorMiddleware ,createCashDeposit)
 
 router.post('/checkWalletAddress', Authentication, [
     body('walletAddress').not().notEmpty().isString().withMessage('Invalid Wallet Address'),
