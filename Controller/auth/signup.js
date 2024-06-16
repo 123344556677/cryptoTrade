@@ -17,7 +17,7 @@ const signup = async (req, res) => {
     if (!req.files) {
         throw new BadRequestError('No file provided');
     }
-
+    console.log(req.files,"file error coming")
     //Multer
     const imageUrls = req.files.map(file => `${req.protocol}://${req.get('host')}/uploads/${file.filename}`);
 

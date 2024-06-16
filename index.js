@@ -10,7 +10,7 @@ require('express-async-errors');
 const app = express();
 
 const corsOptions = {
-  origin: ["https://uhcstock.com", "http://192.168.100.5:3000", "https://admin.uhcstock.com"],
+  origin: ["https://uhcstock.com", "http://192.168.100.5:3000", "https://admin.uhcstock.com","http://localhost:3000","http://localhost:3001"],
   optionsSuccessStatus: 200,
 };
 
