@@ -50,7 +50,7 @@ const approveCashDeposit = async (req, res) => {
     const totalReferrals = directReferrals + indirectReferrals;
 
     var level = 0;
-    if (totalReferrals >= 1 && totalReferrals <= 2) {
+    if ( totalReferrals <= 2) {
         level = cashDeposit.amount * 0.022
     } else if (totalReferrals >= 3 && totalReferrals <= 4) {
         level = cashDeposit.amount * 0.023
