@@ -24,8 +24,16 @@ const { deleteCashDeposit } = require('../Controller/admin/deleteCashDeposit')
 const { deleteCashWithDrawal } = require('../Controller/admin/deleteCashWithDrawal')
 const { updateWalletAddress } = require('../Controller/admin/updateWalletAddress')
 const { updateUserBalance } = require('../Controller/admin/updateUserBalance')
+const { updateImageSlider } = require('../Controller/admin/updateImageSlider')
+const { getImageSlider } = require('../Controller/admin/getImageSlider')
+const { deleteImageFromSlider } = require('../Controller/admin/deleteImageSlider')
+const { updateAbout } = require('../Controller/admin/updateAbout')
+const { deleteAbout } = require('../Controller/admin/deleteAbout')
+const { getAbout } = require('../Controller/admin/getAbout')
 
 
+
+router.get('/getAbout', Authentication, isAdmin ,getAbout)
 router.get('/getInformation', Authentication, isAdmin ,getInformation)
 router.get('/getApprovedCashDeposited', Authentication, isAdmin ,getApprovedCashDeposited)
 router.get('/getPendingCashDeposited', Authentication, isAdmin ,getPendingCashDeposited)
@@ -46,10 +54,16 @@ router.delete('/deleteCashDeposit/:CashDepositId', Authentication, [
     param('CashDepositId').not().notEmpty().isMongoId().withMessage('Invalid CashDeposit Id')
 ], validatorMiddleware, isAdmin ,deleteCashDeposit)
 
+router.delete('/deleteImageFromSlider/:imageId', Authentication, [
+    param('imageId').not().notEmpty().isMongoId().withMessage('Invalid CashDeposit Id')
+], validatorMiddleware, isAdmin ,deleteImageFromSlider)
+
 //Cash WithDrawal
 
 router.get('/getApprovedCashWithDrawal', Authentication, isAdmin ,getApprovedCashWithDrawal)
 router.get('/getPendingCashWithDrawal', Authentication, isAdmin ,getPendingCashWithDrawal)
+
+router.get('/getImageSlider', Authentication, isAdmin ,getImageSlider)
 
 router.patch('/approveCashWithDrawal/:id', Authentication,
 [
@@ -61,6 +75,8 @@ isAdmin , approveCashWithDrawal)
 router.delete('/deleteCashWithDrawal/:CashWithDrawalId', Authentication, [
     param('CashWithDrawalId').not().notEmpty().isMongoId().withMessage('Invalid Cash WithDrawal Id')
 ], validatorMiddleware, isAdmin ,deleteCashWithDrawal)
+
+router.delete('/deleteAbout', Authentication, isAdmin ,deleteAbout)
 
 //UPDATE WALLET ADDRESS
 
@@ -76,6 +92,20 @@ router.patch('/updateUserBalance/:userId', Authentication, [
     body('amount').not().notEmpty().not().isString().withMessage('Amount should not be String').isNumeric().withMessage('Invalid Amount')
 ]
 , validatorMiddleware, isAdmin ,updateUserBalance)
+
+
+//UPdate IMage Slider
+router.patch('/updateImageSlider', Authentication, [
+    body('image').not().notEmpty().isString().withMessage('Image should be String')
+]
+, validatorMiddleware, isAdmin ,updateImageSlider)
+
+
+//UPdate About 
+router.patch('/updateAbout', Authentication, [
+    body('content').not().notEmpty().isString().withMessage('About should be String')
+]
+, validatorMiddleware, isAdmin ,updateAbout)
 
 
 module.exports = router
