@@ -33,7 +33,7 @@ const { getAbout } = require('../Controller/admin/getAbout')
 
 
 
-router.get('/getAbout', Authentication, isAdmin ,getAbout)
+router.get('/getAbout', Authentication ,getAbout)
 router.get('/getInformation', Authentication, isAdmin ,getInformation)
 router.get('/getApprovedCashDeposited', Authentication, isAdmin ,getApprovedCashDeposited)
 router.get('/getPendingCashDeposited', Authentication, isAdmin ,getPendingCashDeposited)
@@ -63,7 +63,7 @@ router.delete('/deleteImageFromSlider/:imageId', Authentication, [
 router.get('/getApprovedCashWithDrawal', Authentication, isAdmin ,getApprovedCashWithDrawal)
 router.get('/getPendingCashWithDrawal', Authentication, isAdmin ,getPendingCashWithDrawal)
 
-router.get('/getImageSlider', Authentication, isAdmin ,getImageSlider)
+router.get('/getImageSlider', Authentication ,getImageSlider)
 
 router.patch('/approveCashWithDrawal/:id', Authentication,
 [
