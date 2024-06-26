@@ -10,7 +10,7 @@ require('express-async-errors');
 const app = express();
 
 const corsOptions = {
-  origin: ["https://uhcstock.com", "http://192.168.100.5:3000", "https://admin.uhcstock.com"],
+  origin: ["https://uhcstock.com", "http://192.168.100.5:3000", "https://admin.uhcstock.com", "http://localhost:3000", "http://localhost:3001"],
   optionsSuccessStatus: 200,
 };
 
@@ -33,12 +33,17 @@ const AuthRoutes = require('./Routes/auth')
 const TransactionRoutes = require('./Routes/transaction')
 const AdminRoutes = require('./Routes/admin')
 const TeamRoutes = require('./Routes/teams')
+const QuantizationRoutes = require('./Routes/quantization')
+const SettingRoutes = require('./Routes/setting')
 
 
 app.use('/user', AuthRoutes)
 app.use('/transaction', TransactionRoutes)
 app.use('/admin', AdminRoutes)
 app.use('/team', TeamRoutes)
+app.use('/quantization', QuantizationRoutes)
+app.use('/setting', SettingRoutes)
+
 
 
 // Error handler and Not Found MiddleWare

@@ -23,7 +23,7 @@ const approveCashDeposit = async (req, res) => {
 
     const cashDeposit = await CashDeposit.findById(id)
 
-    if(cashDeposit.status == 'approved'){
+    if (cashDeposit.status == 'approved') {
         throw new BadRequestError('Cash Deposit is already Approved')
     }
 
@@ -35,19 +35,23 @@ const approveCashDeposit = async (req, res) => {
 
     const user = await User.findById(userId)
 
-    if(!user){
+    if (!user) {
         throw new NotFoundError('User not Found!')
     }
 
-    var totalAmount = additionalAmount + cashDeposit.amount
+
+    var totalAmount = additionalAmount + cashDeposit.amount 
 
     totalAmount -= 1
 
-    user.balance += totalAmount 
+    user.balance += totalAmount
 
-    await user.save()
-    
-    res.status(200).json({ status: 'success', cashDeposit , message: 'Balance is successfully updated'});
+
+
+
+    await user.save();
+
+    res.status(200).json({ status: 'success', cashDeposit, message: 'Balance is successfully updated' });
 
 };
 

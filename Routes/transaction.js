@@ -16,6 +16,7 @@ const { checkWalletAddress } = require('../Controller/transaction/checkWalletAdd
 const { createCashWithDrawal } = require('../Controller/transaction/createCashWithDrawal')
 const { getAdminWalletAddress } = require('../Controller/transaction/getAdminWalletAddress')
 const { getHistory } = require('../Controller/transaction/getHistory')
+const { getLevel } = require('../Controller/transaction/getLevel')
 
 router.post('/createCashDeposit', Authentication, [
     body('transactionNumber').not().notEmpty().isString().withMessage('Invalid Transaction Number'),
@@ -40,5 +41,6 @@ router.post('/createCashWithDrawal', Authentication, [
 
 router.get('/getAdminWalletAddress', Authentication, getAdminWalletAddress)
 router.get('/getHistory', Authentication, getHistory)
+router.get('/getLevel', Authentication, getLevel)
 
 module.exports = router
