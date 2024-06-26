@@ -1,6 +1,8 @@
 const Quantization = require('../../models/Quantization');
 const User = require('../../models/User');
 const { NotFoundError, BadRequestError } = require('../../errors');
+const { distributeReferralBonus } = require('../../HelpingFunctions/nodemailer')
+
 
 const handleUserClick = async (req, res) => {
     const userId = req.user.userId;
@@ -23,8 +25,8 @@ const handleUserClick = async (req, res) => {
     const now = new Date();
     const lastTapDate = new Date(quantization.lastTap);
     const isSameDay = now.getDate() === lastTapDate.getDate() &&
-                      now.getMonth() === lastTapDate.getMonth() &&
-                      now.getFullYear() === lastTapDate.getFullYear();
+        now.getMonth() === lastTapDate.getMonth() &&
+        now.getFullYear() === lastTapDate.getFullYear();
 
     if (!isSameDay) {
         // Reset clicks and lastTap for the new day
@@ -72,6 +74,8 @@ const handleUserClick = async (req, res) => {
     user.balance += earningsPerClick;
 
     await quantization.save();
+    //Passing To Referral
+    await distributeReferralBonus(user, earningsPerClick);
     await user.save();
 
     res.status(200).json({ status: 'success', balance: user.balance, clicks: quantization.clicks, totalClicks: maxClicks });
