@@ -11,9 +11,11 @@ const router = express.Router()
 const { handleUserClick } = require('../Controller/quantization/handleUserClick')
 const { getCryptoRates } = require('../Controller/quantization/getCryptoRates')
 const { getUnitedHealthStockRate } = require('../Controller/quantization/getUnitedHealthStockRate')
+const { getQuantizationData } = require('../Controller/quantization/getQuantizationData')
 
 router.get('/handleUserClick', Authentication, handleUserClick)
 router.get('/getCryptoRates', Authentication, getCryptoRates)
 router.get('/getUnitedHealthStockRate', Authentication, getUnitedHealthStockRate)
+router.get('/getQuantizationData', Authentication, getQuantizationData)
 
 module.exports = router

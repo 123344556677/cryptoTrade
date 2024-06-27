@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 const PhoneNumberSchema = new mongoose.Schema({
     number: {
         type: String
+    },
+    name: {
+        type: String
     }
 });
 

@@ -25,7 +25,7 @@ router.get('/getAnnouncement', Authentication, getAnnouncement)
 
 
 router.patch('/addAnnouncement', Authentication, [
-    body('announcement').not().notEmpty().isString().withMessage('Announcement should be String')
+    body('announcement').not().notEmpty().isString().withMessage('Announcement should be String'),
 ]
 , validatorMiddleware, isAdmin ,addAnnouncement)
 
@@ -34,7 +34,8 @@ router.delete('/deleteAnnouncement/:announcementId', Authentication, [
 ], validatorMiddleware, isAdmin ,deleteAnnouncement)
 
 router.patch('/addPhoneNumber', Authentication, [
-    body('number').not().notEmpty().isString().withMessage('phoneNumber should be String')
+    body('number').not().notEmpty().isString().withMessage('Phone Number should be String'),
+    body('name').not().notEmpty().isString().withMessage('Name should be String')
 ]
 , validatorMiddleware, isAdmin ,addPhoneNumber)
 

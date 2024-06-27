@@ -65,9 +65,10 @@ const handleUserClick = async (req, res) => {
     if (timeDifference < 2) {
         throw new BadRequestError('You can only click once every 2 minutes.');
     }
-
+ 
     quantization.clicks += 1;
     quantization.lastTap = now;
+    quantization.maxClicks = maxClicks;
 
     // Calculate and add earnings for this tap
     const earningsPerClick = (user.balance * ratio) / maxClicks;

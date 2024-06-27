@@ -8,13 +8,17 @@ const QuantizationSchema = new mongoose.Schema({
     },
     lastTap: {
         type: Date,
-        default: Date.now
+        default: () => new Date(Date.now() - 3 * 60 * 1000)
     },
     clicks: {
         type: Number,
         default: 0 
     },
     vipLevel: {
+        type: Number,
+        default: 0 
+    },
+    maxClicks: {
         type: Number,
         default: 0 
     }
