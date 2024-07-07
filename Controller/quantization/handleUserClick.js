@@ -1,3 +1,4 @@
+const { toZonedTime, format } = require('date-fns-tz');
 const Quantization = require('../../models/Quantization');
 const User = require('../../models/User');
 const { NotFoundError, BadRequestError } = require('../../errors');
@@ -23,15 +24,17 @@ const handleUserClick = async (req, res) => {
 
     // Check if a day has passed since the last tap
     const now = new Date();
-    const lastTapDate = new Date(quantization.lastTap);
-    const isSameDay = now.getDate() === lastTapDate.getDate() &&
-        now.getMonth() === lastTapDate.getMonth() &&
-        now.getFullYear() === lastTapDate.getFullYear();
+    const franceTimeZone = 'Europe/Paris';
+    const nowInFrance = toZonedTime(now, franceTimeZone);
+    const lastTapDateInFrance = toZonedTime(new Date(quantization.lastTap), franceTimeZone);
+
+    const isSameDay = format(nowInFrance, 'yyyy-MM-dd') === format(lastTapDateInFrance, 'yyyy-MM-dd');
+
 
     if (!isSameDay) {
         // Reset clicks and lastTap for the new day
         quantization.clicks = 0;
-        quantization.lastTap = now;
+        quantization.lastTap = new Date(Date.now() - 3 * 60 * 1000);
     }
 
     const vipLevelToClicks = {
