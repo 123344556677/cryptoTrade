@@ -6,7 +6,7 @@ const client = new CoinMarketCap(apiKey);
 const getCryptoRates = async (req, res) => {
 
     // Get tickers to fetch latest rates
-    const response = await client.getTickers({ limit: 10 }); // Limit to fetch top 10        
+    const response = await client.getTickers({ limit: 50 }); // Limit to fetch top 10        
     const data = response.data;
 
     const extractFields = (crypto) => {
@@ -21,8 +21,8 @@ const getCryptoRates = async (req, res) => {
     const sortedByPercentChange = data.sort((a, b) => b.quote.USD.percent_change_24h - a.quote.USD.percent_change_24h);
 
     // Extract and format top gainers and losers
-    const topGainers = sortedByPercentChange.slice(0, 5).map(extractFields);
-    const topLosers = sortedByPercentChange.slice(-5).reverse().map(extractFields);
+    const topGainers = sortedByPercentChange.slice(0, 10).map(extractFields);
+    const topLosers = sortedByPercentChange.slice(-10).reverse().map(extractFields);
 
     res.status(200).json({ status: 'success', topGainers, topLosers });
 };

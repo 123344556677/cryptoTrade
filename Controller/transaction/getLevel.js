@@ -129,6 +129,19 @@ const getLevel = async (req, res) => {
 
     }
 
+    const vipLevelToClicks = {
+        1: 30,
+        2: 28,
+        3: 24,
+        4: 22,
+        5: 20,
+        6: 18
+    };
+
+    const maxClicks = vipLevelToClicks[quantization.vipLevel];
+
+    quantization.maxClicks = maxClicks
+
     await quantization.save()
 
     res.status(200).json({ status: 'success', level })

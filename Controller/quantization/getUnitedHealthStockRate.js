@@ -1,32 +1,30 @@
 const axios = require('axios');
-
-const apiKey = 'K5117OYL31TOJWCT'; // Replace with your Alpha Vantage API key
+const { NotFoundError } = require('../../errors');
+const apiKey = 'a5152acf06c04e7d8b2e67977ca5b8ef'; // Replace with your Twelve Data API key
 
 const getUnitedHealthStockRate = async (req, res) => {
 
-    const response = await axios.get(`https://www.alphavantage.co/query`, {
+    const response = await axios.get(`https://api.twelvedata.com/quote`, {
         params: {
-            function: 'GLOBAL_QUOTE',
             symbol: 'UNH',
             apikey: apiKey
         }
     });
 
     const data = response.data;
-    const stockInfo = data['Global Quote'];
 
-    if (!stockInfo) {
-        return res.status(404).json({ status: 'error', message: 'Stock data not found' });
+    if (!data || data.status === 'error') {
+        throw new NotFoundError('Stock data not found');
     }
 
     const currentRate = {
-        symbol: stockInfo['01. symbol'],
-        price: parseFloat(stockInfo['05. price']),
-        volume: parseInt(stockInfo['06. volume']),
-        lastTradingDay: stockInfo['07. latest trading day'],
-        previousClose: parseFloat(stockInfo['08. previous close']),
-        change: parseFloat(stockInfo['09. change']),
-        changePercent: stockInfo['10. change percent']
+        symbol: data.symbol,
+        price: parseFloat(data.close),
+        volume: parseInt(data.volume),
+        lastTradingDay: data.datetime,
+        previousClose: parseFloat(data.previous_close),
+        change: parseFloat(data.change),
+        changePercent: data.percent_change
     };
 
     res.status(200).json({ status: 'success', currentRate });
