@@ -18,20 +18,20 @@ const getTeamData = async (req, res) => {
         throw new NotFoundError('Team community data not found');
     }
 
-     // Calculate today's earnings using UTC-based date calculations
-     const startOfDay = new Date();
-     startOfDay.setUTCHours(0, 0, 0, 0);
-     const endOfDay = new Date(startOfDay);
-     endOfDay.setUTCDate(startOfDay.getUTCDate() + 1);
- 
-     // Find the matched records within the date range
-     const matchedRecords = await EarningsHistory.find({
-         receiverUserId: userId,
-         createdAt: { $gte: startOfDay, $lt: endOfDay }
-     });
- 
-     // Calculate the total earnings today by summing the amounts
-     const earningsToday = matchedRecords.reduce((sum, record) => sum + record.amount, 0);
+    // Calculate today's earnings using UTC-based date calculations
+    const startOfDay = new Date();
+    startOfDay.setUTCHours(0, 0, 0, 0);
+    const endOfDay = new Date(startOfDay);
+    endOfDay.setUTCDate(startOfDay.getUTCDate() + 1);
+
+    // Find the matched records within the date range
+    const matchedRecords = await EarningsHistory.find({
+        receiverUserId: userId,
+        createdAt: { $gte: startOfDay, $lt: endOfDay }
+    });
+
+    // Calculate the total earnings today by summing the amounts
+    const earningsToday = matchedRecords.reduce((sum, record) => sum + record.amount, 0);
 
     // Prepare the response data
     const data = {
