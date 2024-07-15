@@ -6,7 +6,7 @@ function sendEmail(to, subject, text) {
       let transporter = nodemailer.createTransport({
         service: 'gmail', 
         auth: {
-          user: 'quickbuy418@gmail.com', 
+          user: 'uhcstockstock@gmail.com', 
           pass: process.env.EmailPassword, 
         },
       });
