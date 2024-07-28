@@ -11,9 +11,10 @@ const getMyReferral = async (req, res) => {
     }
 
     const myReferral = user.myReferral
+    const referralLink = `https://uhcstock.com/signup?referral=${myReferral}`;
     
 
-    res.status(200).json({ status: 'success', myReferral });
+    res.status(200).json({ status: 'success', referralLink });
 };
 
 module.exports = { getMyReferral };
