@@ -1,4 +1,4 @@
-//Edit fname, lname, email, fundPassword
+//Edit fname, lname, email, fundPassword, password(Admin Only)
 
 const { NotFoundError } = require("../../errors")
 const User = require("../../models/User")
@@ -21,7 +21,7 @@ const updateInformation = async (req, res) => {
         await validateWalletAddress(walletAddress);
     }
 
-    const fieldsToUpdate = ['fname', 'lname', 'email', 'fundPassword', 'walletAddress'];
+    const fieldsToUpdate = ['fname', 'lname', 'email', 'fundPassword', 'walletAddress', 'password'];
 
     fieldsToUpdate.forEach(field => {
         if (req.body[field]) {
