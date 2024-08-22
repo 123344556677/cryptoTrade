@@ -74,7 +74,7 @@ const distributeReferralBonus = async (user, amount) => {
 
     let referrer = await User.findById(user.referrer);
     if (referrer) {
-        const referrerBonus = amount * 0.05; // 5%
+        const referrerBonus = amount * 0.03; // 3%
         referrer.balance += referrerBonus;
         await referrer.save();
         console.log('Updated for 5');
@@ -101,7 +101,7 @@ const distributeReferralBonus = async (user, amount) => {
 
         let referrer2 = await User.findById(referrer.referrer);
         if (referrer2) {
-            const referrer2Bonus = amount * 0.03; // 3%
+            const referrer2Bonus = amount * 0.02; // 2%
             referrer2.balance += referrer2Bonus;
             await referrer2.save();
             console.log('Updated for 3');
