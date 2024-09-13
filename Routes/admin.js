@@ -31,7 +31,8 @@ const { updateAbout } = require('../Controller/admin/updateAbout')
 const { deleteAbout } = require('../Controller/admin/deleteAbout')
 const { getAbout } = require('../Controller/admin/getAbout')
 const { updateUserLevel } = require('../Controller/admin/updateUserLevel')
-
+const { getUserHistory} = require('../Controller/admin/getUserHistory')
+const { getUserTeamContribution} = require('../Controller/admin/getUserTeamContribution')
 
 
 router.get('/getAbout', Authentication ,getAbout)
@@ -115,6 +116,18 @@ router.patch('/updateUserLevel/:userId', Authentication, [
     body('level').not().notEmpty().isIn([1, 2, 3, 4, 5, 6]).withMessage('Level should be 1, 2, 3, 4, 5 or 6')
 ]
 , validatorMiddleware, isAdmin ,updateUserLevel)
+
+// Get User History
+router.get('/getUserHistory/:userId', Authentication, [
+    param('userId').not().notEmpty().isMongoId().withMessage('Invalid User ID')
+]
+, validatorMiddleware, isAdmin ,getUserHistory)
+
+//get User Team Contribution
+router.get('/getUserTeamContribution/:userId', Authentication, [
+    param('userId').not().notEmpty().isMongoId().withMessage('Invalid User ID')
+]
+, validatorMiddleware, isAdmin ,getUserTeamContribution)
 
 
 module.exports = router
