@@ -57,8 +57,8 @@ app.use(errorhandler)
 
 const port = process.env.PORT || 5001;
 
-app.listen(port, async () => {
-  await DB(process.env.MONGODB_URI);
-  console.log(`Server is listening on port ${port}`);
-});
+// app.listen(port, async () => {
+//   await DB(process.env.MONGODB_URI);
+//   console.log(`Server is listening on port ${port}`);
+// });
 
