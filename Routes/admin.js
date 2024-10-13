@@ -30,7 +30,9 @@ const { deleteImageFromSlider } = require('../Controller/admin/deleteImageSlider
 const { updateAbout } = require('../Controller/admin/updateAbout')
 const { deleteAbout } = require('../Controller/admin/deleteAbout')
 const { getAbout } = require('../Controller/admin/getAbout')
-
+const { updateUserLevel } = require('../Controller/admin/updateUserLevel')
+const { getUserHistory} = require('../Controller/admin/getUserHistory')
+const { getUserTeamContribution} = require('../Controller/admin/getUserTeamContribution')
 
 
 router.get('/getAbout', Authentication ,getAbout)
@@ -106,6 +108,26 @@ router.patch('/updateAbout', Authentication, [
     body('content').not().notEmpty().isString().withMessage('About should be String')
 ]
 , validatorMiddleware, isAdmin ,updateAbout)
+
+
+//update User Level
+router.patch('/updateUserLevel/:userId', Authentication, [
+    param('userId').not().notEmpty().isMongoId().withMessage('Invalid User ID'),
+    body('level').not().notEmpty().isIn([1, 2, 3, 4, 5, 6]).withMessage('Level should be 1, 2, 3, 4, 5 or 6')
+]
+, validatorMiddleware, isAdmin ,updateUserLevel)
+
+// Get User History
+router.get('/getUserHistory/:userId', Authentication, [
+    param('userId').not().notEmpty().isMongoId().withMessage('Invalid User ID')
+]
+, validatorMiddleware, isAdmin ,getUserHistory)
+
+//get User Team Contribution
+router.get('/getUserTeamContribution/:userId', Authentication, [
+    param('userId').not().notEmpty().isMongoId().withMessage('Invalid User ID')
+]
+, validatorMiddleware, isAdmin ,getUserTeamContribution)
 
 
 module.exports = router
